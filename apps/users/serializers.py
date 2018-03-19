@@ -58,8 +58,10 @@ class UserDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = ("id","user", "idcardnumber", "username",  "name","depart_user",
-                  "mobile","joinedyears", "education", "title", "internel_trainer", "ys","certificates",
-                  "cmanagerlevel","cmanagerrank","clerkrank","rank13","primccbp","intermediateccbp","post")
+                  "mobile","joinedyears", "education", "title", "internel_trainer",
+                  "ys","certificates",
+                  "cmanagerlevel","cmanagerrank","clerkrank","rank13",
+                  "primccbp","intermediateccbp","post")
 
     def get_depart_user(self,obj):
         departinfo = IndexUserDepart.objects.filter(user_id=obj.id)

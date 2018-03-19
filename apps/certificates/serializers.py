@@ -17,9 +17,14 @@ class CerficateSerializer(serializers.ModelSerializer):
 
 class IndexUserCertificateSerializer(serializers.ModelSerializer):
     certificate = serializers.StringRelatedField()
+    certificatemanager = serializers.HyperlinkedIdentityField(
+        # read_only=True,
+         view_name='indexusercertificate-detail'
+
+    )
     class Meta:
         model = IndexUserCertificate
-        fields = ("user", "certificate", "image")
+        fields = ("user", "certificate", "image","certificatemanager")
 
 class IndexUserCertificateSerializer2(serializers.ModelSerializer):
 
