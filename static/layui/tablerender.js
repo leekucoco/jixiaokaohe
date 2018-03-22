@@ -1,8 +1,11 @@
 layui.use('table', function(){
     var table = layui.table;
+    //tables.set();
+    token = window.localStorage.getItem('token');
+    token =  "JWT " + token
     table.render({
         elem: '#idTest'
-        ,url:'/goods/'
+        ,url:'/cofficient/'
         ,height: 'full-200'
         ,page: { //支持传入 laypage 组件的所有参数（某些参数除外，如：jump/elem） - 详见文档
             layout: ['limit', 'count', 'prev', 'page', 'next', 'skip'] //自定义分页布局
@@ -10,36 +13,56 @@ layui.use('table', function(){
             ,groups: 3 //只显示 1 个连续页码
             ,first: false //不显示首页
             ,last: false//不显示尾页
-
         }
-
-        ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
+        // ,headers: {
+        //     Authorization:token
+        // } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+        ,response: {
+            statusName: 'status' //数据状态的字段名称，默认：code
+            ,statusCode: 200 //成功的状态码，默认：0
+            // ,msgName: 'hint' //状态信息的字段名称，默认：msg
+            ,countName: 'count' //数据总数的字段名称，默认：count
+            ,dataName: 'results' //数据列表的字段名称，默认：data
+}
+        // ,cellMinWidth: 80 //全局定义常规单元格的最小宽度，layui 2.2.1 新增
         ,cols: [[
             {type:'checkbox', fixed: 'left'}
             //,{field:'id',  wide:80, sort: true, title:"id"}
-            ,{field:'st_idcardnum',edit:true, title:"员工身份证号"}
-            ,{field:'st_name',edit:true, title:"姓名"}
-            ,{field:'st_depart',edit:true,sort: true,title:"部门"}
-            ,{field:'st_joindyears', edit:true,sort: true,title:"参加工作时间"}
-            ,{field:'st_yearsofworking', edit:true,sort: true,title:"工作年限"}
-            ,{field:'st_demandyears', edit:true,sort: true,title:"要求工作年限"}
-            ,{field:'st_scoreofyears', edit:true,sort: true,title:"年限得分"}
-            ,{field:'st_education', edit:true,sort: true,title:"学历"}
-            ,{field:'st_demandeducation', edit:true,sort: true,title:"学历要求"}
-            ,{field:'st_educationscore', edit:true,sort: true,title:"学历得分"}
-            ,{field:'st_title',edit:true,sort: true,title:"职称"}
-            ,{field:'st_demandtitle', edit:true,sort: true,title:"职称要求"}
-            ,{field:'st_scoreoftitle', edit:true,sort: true,title:"职称得分"}
-            ,{field:'st_scoreofprimaryccbp', edit:true,sort: true,title:"初级银行从业得分"}
-            ,{field:'st_scoreofmiddleCCBP', edit:true,sort: true,title:"中级银行从业得分"}
-            ,{field:'st_internaltrainer', edit:true,sort: true,title:"内训师"}
-            ,{field:'st_scoreofinternaltrainer', edit:true,sort: true,title:"内训师得分"}
-            ,{field:'st_scoreofallcertificates', edit:true,sort: true,title:"所有证书得分"}
-            ,{field:'st_rankeofinternal', edit:true,sort: true,title:"内部级数"}
-            ,{field:'st_coefficient',edit:true,sort: true,title:"工资系数"}
-            ,{field:'right', width:177 ,toolbar: '#barDemo'}
-
+            ,{field:'idcardnumber',edit:true, width:180,title:"员工身份证号"}
+            ,{field:'name',width:80, title:"姓名"}
+            ,{field:'depart',width:120,sort: true,title:"部门"
+                ,templet: function (d) {
+                    return d.depart.name
+                 }
+             }
+             ,{field:'coefficent',width:80, edit:true, title:"系数"}
+            // ,{field:'st_joindyears', edit:true,sort: true,title:"参加工作时间"}
+            // ,{field:'st_yearsofworking', edit:true,sort: true,title:"工作年限"}
+            // ,{field:'st_demandyears', edit:true,sort: true,title:"要求工作年限"}
+            // ,{field:'st_scoreofyears', edit:true,sort: true,title:"年限得分"}
+            // ,{field:'st_education', edit:true,sort: true,title:"学历"}
+            // ,{field:'st_demandeducation', edit:true,sort: true,title:"学历要求"}
+            // ,{field:'st_educationscore', edit:true,sort: true,title:"学历得分"}
+            // ,{field:'st_title',edit:true,sort: true,title:"职称"}
+            // ,{field:'st_demandtitle', edit:true,sort: true,title:"职称要求"}
+            // ,{field:'st_scoreoftitle', edit:true,sort: true,title:"职称得分"}
+            // ,{field:'st_scoreofprimaryccbp', edit:true,sort: true,title:"初级银行从业得分"}
+            // ,{field:'st_scoreofmiddleCCBP', edit:true,sort: true,title:"中级银行从业得分"}
+            // ,{field:'st_internaltrainer', edit:true,sort: true,title:"内训师"}
+            // ,{field:'st_scoreofinternaltrainer', edit:true,sort: true,title:"内训师得分"}
+            // ,{field:'st_scoreofallcertificates', edit:true,sort: true,title:"所有证书得分"}
+            // ,{field:'st_rankeofinternal', edit:true,sort: true,title:"内部级数"}
+            // ,{field:'st_coefficient',edit:true,sort: true,title:"工资系数"}
+            ,{field:'right', width:190 ,toolbar: '#barDemo'}
         ]]
+    //     ,done: function (res) {
+    //             console.log(res);
+    //
+    // }
+    //         ,beforeSend: function(xhr) {
+    //             token = window.localStorage.getItem('token');
+    //             xhr.setRequestHeader("authorization", "JWT " + token);
+    //         }
     });
 
     // Idcardnum              string        `gorm:"not null;unique" form:"st_idcardnum" json:"st_idcardnum"`                    //员工身份证号
@@ -122,16 +145,15 @@ layui.use('table', function(){
         var html = '<div class="layui-form">'+
             '<table class="layui-table" id="certable">'+
             '<colgroup> <col width="150"> <col width="150"> <col width="200"> <col> </colgroup>'+
-            '<thead> <tr> <th>证书名称</th> <th>证书得分</th> <th>添加时间</th></tr> </thead><tbody>'
-
+            '<thead> <tr> <th>证书名称</th> <th>证书得分</th> <th>管理地址</th></tr> </thead><tbody>'
 
 
         if(obj.event === 'detail'){
-            if(data.certificates.length != 0){
+            if(data.certificates != 'no certificates info'){
                 for (i = 0; i<data.certificates.length; i++){
-                    html = html+"<tr> <td>"+data.certificates[i].certificate+
-                        "</td> <td>"+data.certificates[i].scoreofcertificate+
-                        "</td> <td>"+data.certificates[i].CreatedAt+"</td></tr>"
+                    html = html+"<tr> <td>"+data.certificates[i].name+
+                        "</td> <td>"+data.certificates[i].score+
+                        "</td> <td><img src="+ data.certificates[i].image + " >"+"</td></tr>"
                    // msg = msg + data.certificates[i].certificate
                 }
             }else{
@@ -172,23 +194,39 @@ layui.use('table', function(){
 
             });
         } else if(obj.event === 'update'){
-           // console.log(obj.data)
+            //console.log(obj.data)
+
             layui.jquery.ajax(
                 {
-                    url: '/api/v1/updatestaffrecord',
+                    url: '/cofficient/'+obj.data.id+'/',
                     type: 'PUT',
                     contentType: 'application/json;charset=utf-8',
 
-                    data: JSON.stringify(data),
+                    data: JSON.stringify({
+                        coefficent:parseFloat(obj.data.coefficent),
+                        user:parseInt(obj.data.user)
+                    }),
                     error : function (res) {
-                        layer.alert(res);
+                        //console.log(res.status)
+                        if (res.status != 403){
+                            layer.alert('未知的错我')
+                        }else{
+                            layer.alert('无权限操作此数据')
+                        }
+
                     },
-                    success : function () {
+                    success : function (res) {
+                        //console.log(res)
                         layer.alert('更新行：<br>'+
-                            '姓名:'+data.st_name+'<br>')
+                            '姓名:'+data.name+'<br>')
                         //obj.del();
                         // layer.close(index);
-                    }
+                    },
+                    beforeSend: function(xhr) {
+                        token = window.localStorage.getItem('token');
+                         xhr.setRequestHeader("authorization", "JWT " + token);
+                     }
+
 
                 }
             );

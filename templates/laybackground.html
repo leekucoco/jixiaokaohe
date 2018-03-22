@@ -30,17 +30,43 @@
             </li>
         </ul>
         <ul class="layui-nav layui-layout-right">
-            <li class="layui-nav-item">
+            <li class="layui-nav-item" >
                 <a href="javascript:;">
-                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img">
-                    管理员
+{#                    <img src="http://t.cn/RCzsdCq" class="layui-nav-img" >#}
+                    {{ user.username }}
                 </a>
                 <dl class="layui-nav-child">
-                    <dd><a href="">基本资料</a></dd>
+                    <dd><a href="javascript:void(0);" onclick="userdetail();return false;">基本信息</a></dd>
                     <dd><a href="">安全设置</a></dd>
                 </dl>
+                <script type="text/javascript">
+                function userdetail(){
+                    id = localStorage.getItem("userid");
+                    setTimeout(function() {
+                        location.replace("/users/"+id);
+                    }, 200);
+                }
+
+            </script>
             </li>
-            <li class="layui-nav-item"><a href="/">退出系统</a></li>
+            <li class="layui-nav-item">
+                <a href =  "javascript:void(0);" onclick="logout();return false;">退出系统</a>
+            </li>
+            <script type="text/javascript">
+                function logout(){
+                    console.log("onclick logout")
+                    localStorage.removeItem("token");
+				//console.log(data)
+                    localStorage.removeItem("user");
+                    localStorage.removeItem("name");
+                    localStorage.removeItem("userid");
+                    localStorage.removeItem("idcardnumber");
+                    setTimeout(function() {
+                        location.replace("/laylogin/");
+                    }, 2000);
+                }
+
+            </script>
         </ul>
     </div>
 
@@ -66,7 +92,10 @@
                 <li class="layui-nav-item"><a href="javascript:;">云市场</a></li>
                 <li class="layui-nav-item"><a href="javascript:;">发布商品</a></li>
             </ul>
+            <div id = "funcnavbar"></div>
+                <div id="view"></div>
         </div>
+
     </div>
 
 
@@ -77,6 +106,7 @@
     <div class="layui-footer">
         <!-- 底部固定区域 -->
         数据管理测试页面20180112
+
     </div>
 
 </body>

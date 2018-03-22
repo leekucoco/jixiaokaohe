@@ -6,13 +6,18 @@ layui.use(['form'], function() {
 	form.on('submit(LAY-user-login-submit)', function(obj) {
 		// obj.field.verkey = codeKey;
 		layer.load(1);
-		console.log(obj.field)
+		// console.log(obj.field)
 		$.post("/login/", obj.field, function(data) {
 			console.log(data)
+			// lay.msg("ok")
 			if (data) {
-				layer.msg(data.msg,{icon: 1});
+				//layer.msg(data.msg,{icon: 1});
 				localStorage.setItem("token", data.token);
-				//localStorage.setItem("user", JSON.stringify(data.user));
+				//console.log(data)
+				localStorage.setItem("user", data.user.username);
+				localStorage.setItem("userid", data.user.id);
+				localStorage.setItem("name", data.user.name);
+				localStorage.setItem("idcardnumber", data.user.idcardnumber);
 				setTimeout(function() {
 					location.replace("/laybackground/");
 				}, 2000);
@@ -42,7 +47,7 @@ layui.use(['form'], function() {
 function checkLogin(){
 	var token = localStorage.getItem("token");
 	if (token != null) {
-		location.replace("/index/");
+		location.replace("/laybackground/");
 	}
 }
 

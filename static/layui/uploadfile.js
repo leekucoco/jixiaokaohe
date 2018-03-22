@@ -8,16 +8,20 @@ layui.use('upload', function() {
     upload.render({
         elem: '#test10'
         ,method:'post'
-        ,headers: {
-            Authorization:token
-        } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
+        // ,headers: {
+        //     Authorization:token
+        // } //可选项。额外的参数，如：{id: 123, abc: 'xxx'}
         ,url: '/uploadbasefile/'
         ,accept: 'file' //普通文件
         // ,exts: 'xlsx|doc|xls' //只允许上传压缩文件
         , done: function (res) {
             console.log(res)
             //layer.alert(res.success)
-        }
+        },
+                            beforeSend: function(xhr) {
+                        token = window.localStorage.getItem('token');
+                         xhr.setRequestHeader("authorization", "JWT " + token);
+                     }
     });
     //多文件列表示例
 

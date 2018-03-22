@@ -49,11 +49,11 @@ class CoefficientDetailViewset(viewsets.ModelViewSet):
             return CofficientCreateSerializer
     def get_permissions(self):
         if self.action == "retrieve":
-            return [permissions.IsAuthenticatedOrReadOnly()]
+            return [permissions.IsAuthenticated()]
         elif self.action == "create":
             return [permissions.IsAdminUser()]
         elif self.action == "list":
-            return [permissions.IsAuthenticatedOrReadOnly()]
+            return [permissions.IsAuthenticated()]
         elif self.action == "update":
             return [permissions.IsAdminUser()]
         elif self.action == "partial_update":

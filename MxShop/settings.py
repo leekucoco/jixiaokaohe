@@ -172,6 +172,7 @@ import datetime
 JWT_AUTH = {
     'JWT_EXPIRATION_DELTA': datetime.timedelta(days=7),
     'JWT_AUTH_HEADER_PREFIX': 'JWT',
+    'JWT_RESPONSE_PAYLOAD_HANDLER': 'users.jwt_response_payload_handl.jwt_response_payload_handler'
 }
 
 #手机号码正则表达式

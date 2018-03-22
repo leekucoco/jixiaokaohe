@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from rest_framework.validators import UniqueTogetherValidator
-
+from datetime import datetime
 from .models import UserFav
 from .models import UserLeavingMessage, UserAddress, UserUploadBaseFiles
 from goods.serializers import GoodsSerializer
@@ -51,13 +51,18 @@ class UploadFilesSerializer(serializers.ModelSerializer):
         user = self.context["request"].user
         filename = validated_data["file"].name
         validated_data["filename"] = filename
-        existed = UserUploadBaseFiles.objects.filter(user=user,filename=filename)
+        existed = UserUploadBaseFiles.objects.get(user=user,filename=filename)
         if existed:
+            # existed.save()
+            # existed.message = validated_data["message"]
+            # existed.save()
+            existed.update_time = datetime.now()
             existed.save()
+            return existed
         else:
             existed = UserUploadBaseFiles.objects.create(**validated_data)
 
-        return existed
+            return existed
     class Meta:
         model = UserUploadBaseFiles
         fields = "__all__"

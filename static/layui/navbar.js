@@ -1,5 +1,34 @@
-layui.use('element', function(){
+layui.use(['element','layer','laytpl'], function(){
     var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+    var laytpl = layui.laytpl;
+
+    var data = { //数据
+        "title":"Layui常用模块"
+        ,"list":[{"modname":"弹层","alias":"layer","site":"layer.layui.com"},{"modname":"表单","alias":"form"}]
+    };
+
+    var ht =
+      "<h3>{{ d.title }} </h3><ul>"+
+       " {{#  layui.each(d.list, function(index, item){ }}"+
+        "<li>"+
+          "<span>{{ item.modname }} </span>"+
+          "<span>{{ item.alias }}：</span>"+
+          "<span>{{ item.site || '' }}</span>"+
+        "</li>"+
+        "{{#  }); }}"+
+        "{{#  if(d.list.length === 0){ }}"+ "无数据" +
+            "{{#  } }}"+
+      "</ul>"
+    var getTpl = ht
+        // console.log(getTpl)
+    ,view = document.getElementById('view');
+        // console.log(view);
+    laytpl(getTpl).render(data, function(html){
+        view.innerHTML = html;
+    });
+
+
+
 
     //监听导航点击
     element.on('nav(leftbar)', function(elem){

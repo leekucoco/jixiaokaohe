@@ -60,6 +60,7 @@ class UserUploadBaseFiles(models.Model):
     message = models.TextField(default="", verbose_name="留言内容", help_text="留言内容")
     file = models.FileField(upload_to="salarybase", verbose_name="上传的文件", help_text="上传的文件")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
+    update_time = models.DateTimeField(null=True, blank=True, verbose_name="修改时间")
     #filename2 = models.FileField.get_filename("self",file)
 
 

@@ -22,10 +22,16 @@ class IndexUserCertificateSerializer(serializers.ModelSerializer):
          view_name='indexusercertificate-detail'
 
     )
+    name = serializers.SerializerMethodField()
+    score = serializers.SerializerMethodField()
+
     class Meta:
         model = IndexUserCertificate
-        fields = ("user", "certificate", "image","certificatemanager")
-
+        fields = ("user", "certificate", "name","score","image","certificatemanager")
+    def get_name(self,obj):
+        return obj.certificate.name
+    def get_score(self,obj):
+        return obj.certificate.score
 class IndexUserCertificateSerializer2(serializers.ModelSerializer):
 
     class Meta:

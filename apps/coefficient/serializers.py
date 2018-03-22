@@ -14,7 +14,6 @@ from certificates.serializers import IndexUserCertificateSerializer
 from users.models import UserProfile
 User = get_user_model()
 
-
 class CofficientCreateSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
     class Meta:
@@ -122,9 +121,8 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
                     demandyearsres=1
                 elif departtype ==1 and post != "驾驶员":
                     demandyearsres =3
-
-
-
+            else:
+                return 5
             return departtype
         else:
             return 2
