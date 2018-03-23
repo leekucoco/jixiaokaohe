@@ -23,8 +23,10 @@ class Cerficates(models.Model):
         return "name:"+self.name+" "+"score:"+str(self.score)
 
 class IndexUserCertificate(models.Model):
-    user = models.ForeignKey(User, related_name='user_certificate',verbose_name="用户-证书")
-    certificate =models.ForeignKey(Cerficates, related_name='certificate_user',verbose_name="证书-用户")
+    user = models.ForeignKey(User, related_name='user_certificate',verbose_name="用户")
+    certificate =models.ForeignKey(Cerficates, related_name='certificate_user',verbose_name="证书")
+    #ctotalscore = models.IntegerField(default=0 ,verbose_name="证书总得分", help_text="证书总得分")
+    #certificate = models.ManyToManyField(Cerficates,verbose_name="用户证书集合")
     image = models.ImageField(upload_to="certificates/images/", null=True, blank=True, verbose_name="证书图片")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
     update_time = models.DateTimeField(default=datetime.now, verbose_name="修改时间")
@@ -32,8 +34,10 @@ class IndexUserCertificate(models.Model):
         verbose_name = '用户-证书'
         verbose_name_plural = verbose_name
         #unique_together = ("user", "depart")
-    def get_total_score(self):
-        return self.certificate.score
+    def get_total_score(self,instance, **kwargs):
+        pass
+
+        # return self.certificate.score
     def __str__(self):
-        return self.certificate.name
+        return self.user.username
 

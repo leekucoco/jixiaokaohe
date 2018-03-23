@@ -23,6 +23,7 @@ class CoefficientDetail(models.Model):
     coefficent = models.FloatField(default=0,verbose_name="系数",help_text="系数")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
     update_time = models.DateTimeField(default=datetime.now, verbose_name="修改时间")
+    is_special = models.BooleanField(default=False,verbose_name="是否为特殊指定系数")
 
     class Meta:
         verbose_name = "员工系数"
@@ -30,4 +31,4 @@ class CoefficientDetail(models.Model):
         unique_together = ("user", "coefficent")
 
     def __str__(self):
-        return self.user.name+" "+self.rank+" " +self.coefficent
+        return self.user.username

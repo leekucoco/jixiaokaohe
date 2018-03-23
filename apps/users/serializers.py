@@ -13,7 +13,7 @@ from rest_framework.validators import UniqueValidator
 from django.db.models import Q
 from django.utils.timezone import now
 from MxShop.settings import REGEX_MOBILE
-
+from rank13.serializers import Rank13CoefficentSerializer
 User = get_user_model()
 
 
@@ -54,7 +54,7 @@ class UserDetailSerializer(serializers.ModelSerializer):
     depart_user = serializers.SerializerMethodField()
     ys = serializers.SerializerMethodField()
     certificates = serializers.SerializerMethodField()
-
+    rank13 = Rank13CoefficentSerializer()
     class Meta:
         model = User
         fields = ("id","user", "idcardnumber", "username",  "name","depart_user",

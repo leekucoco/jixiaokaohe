@@ -31,8 +31,13 @@ from trade.views import ShoppingCartViewset, OrderViewset
 from depart.views import DepartViewset,IndexUserDeparViewset
 from coefficient.views import CoefficientDetailViewset
 from certificates.views import CerficatesViewset,IndexUserCertificateViewset
+from rank13.views import Rank13CoefficentViewset,AgentViewset,PostViewset
 router = DefaultRouter()
 
+
+router.register(r'rank13coefficent', Rank13CoefficentViewset, base_name="rank13coefficent")
+router.register(r'agent', AgentViewset, base_name="agent")
+router.register(r'post', PostViewset, base_name="post")
 #配置goods的url
 router.register(r'goods', GoodsListViewSet, base_name="goods")
 

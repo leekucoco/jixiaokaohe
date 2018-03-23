@@ -36,6 +36,24 @@ layui.use('table', function(){
                  }
              }
              ,{field:'coefficent',width:80, edit:true, title:"系数"}
+             ,{field:'joinedyears',width:80, edit:true, title:"参加工作时间"}
+             ,{field:'yearsofwork',width:80, edit:true, title:"工作年限"}
+             ,{field:'certificatetotalscore',width:80, edit:true, title:"证书得分"}
+             ,{field:'education',width:80, edit:true, title:"学历"
+                ,templet: function (d) {
+                    return d.education[1]
+                 }
+
+            }
+
+             ,{field:'rank13',width:80, edit:true, title:"等级"}
+             ,{field:'post',width:80, edit:true, title:"岗位"}
+             // "id","user","coefficent","ra",
+             //      "name","idcardnumber","depart",
+             //      "post","rank13","joinedyears",
+             //      "yearsofwork","scoreofyears",
+             //      "education","yearsofscore","demandyears",
+             //      "certificates","certificatetotalscore"
             // ,{field:'st_joindyears', edit:true,sort: true,title:"参加工作时间"}
             // ,{field:'st_yearsofworking', edit:true,sort: true,title:"工作年限"}
             // ,{field:'st_demandyears', edit:true,sort: true,title:"要求工作年限"}

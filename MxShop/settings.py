@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'depart.apps.DepartConfig',
     'coefficient.apps.CoefficientConfig',
     'certificates.apps.CertificatesConfig',
+    'demandsdetail.apps.DemandsdetailConfig',
+    'rank13.apps.Rank13Config'
 ]
 
 MIDDLEWARE = [

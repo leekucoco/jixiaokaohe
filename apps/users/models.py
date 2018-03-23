@@ -4,7 +4,7 @@ from django.db import models
 from django.contrib.auth.models import AbstractUser
 
 # Create your models here.
-
+from rank13.models import Rank13Coefficent
 
 class UserProfile(AbstractUser):
     """
@@ -75,7 +75,7 @@ class UserProfile(AbstractUser):
 
     clerkrank = models.IntegerField(default=1,choices=CLERKRANK_CHONCES,verbose_name="柜员等级",
                                            help_text=u"柜员等级: 1(无),2(见习),3(初级),4(中级),5(高级),6(资深)")
-    rank13 = models.IntegerField(default=1, verbose_name="行员等级", help_text="行员等级(共13等)")
+    rank13 = models.ForeignKey(Rank13Coefficent, verbose_name="行员等级", help_text="行员等级(共13等)")
     primccbp = models.IntegerField(default=0, verbose_name="初级银行从业", help_text="初级银行从业")
     intermediateccbp = models.IntegerField(default=0, verbose_name="中级银行从业", help_text="中级银行从业")
     post = models.CharField(null=True, blank=True, max_length=11, verbose_name="岗位")

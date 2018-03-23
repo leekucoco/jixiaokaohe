@@ -18,7 +18,7 @@ class CofficientCreateSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
     class Meta:
         model = CoefficientDetail
-        fields = "__all__"
+        fields = ("user","coefficent")
     # def create(self, validated_data):
     #     user_data = validated_data['user']
     #     #name = certificates_data['name']
