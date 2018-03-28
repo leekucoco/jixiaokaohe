@@ -54,7 +54,9 @@ INSTALLED_APPS = [
     'coefficient.apps.CoefficientConfig',
     'certificates.apps.CertificatesConfig',
     'demandsdetail.apps.DemandsdetailConfig',
-    'rank13.apps.Rank13Config'
+    'rank13.apps.Rank13Config',
+    'djcelery',
+
 ]
 
 MIDDLEWARE = [
@@ -199,3 +201,43 @@ ali_pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/alipay_key_2048.txt')
 #         }
 #     }
 # }
+
+
+
+import djcelery
+#from djcelery.schedulers import DatabaseScheduler
+djcelery.setup_loader()
+#BROKER_URL= 'amqp://guest@localhost//'
+BROKER_URL= 'redis://localhost:6379/0'
+
+#CELERY_RESULT_BACKEND = 'amqp://guest@localhost//'
+CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERYD_MAX_TASKS_PER_CHILD = 3
+BROKER_POOL_LIMIT = 0
+#CELERY_RESULT_BACKEND='djcelery.backends.database:DatabaseBackend'  #配置backend
+CELERY_TIMEZONE = TIME_ZONE
+#CELERYBEAT_SCHEDULER = 'redis://localhost:6379/0'
+CELERYBEAT_SCHEDULER = 'djcelery.schedulers.DatabaseScheduler'
+#CELERYBEAT_SCHEDULER = 'amqp://guest@localhost//'
+# 下面是定时任务的设置，我一共配置了三个定时任务.
+from celery.schedules import crontab
+CELERYBEAT_SCHEDULE = {
+    #定时任务一：　每24小时周期执行任务(del_redis_data)
+    u'更新用户等级系数': {
+        "task": "coefficient.task.ensurerankleveltask",
+        "schedule": crontab(minute='*/1'),
+        "args": (),
+    },
+    # #定时任务二:　每天的凌晨12:30分，执行任务(back_up1)
+    # u'生成日报表': {
+    #     'task': 'app.tasks.back_up1',
+    #     'schedule': crontab(minute=30, hour=0),
+    #     "args": ()
+    # },
+    # #定时任务三:每个月的１号的6:00启动，执行任务(back_up2)
+    # u'生成统计报表': {
+    #         'task': 'app.tasks.back_up2',
+    #         'schedule': crontab(hour=6, minute=0,   day_of_month='1'),
+    #         "args": ()
+    # },
+}

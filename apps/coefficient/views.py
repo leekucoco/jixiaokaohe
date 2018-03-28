@@ -9,7 +9,8 @@ from rest_framework import viewsets
 from rest_framework import permissions
 from rest_framework import authentication
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
-
+from rest_framework.response import Response
+from rest_framework import status
 
 from .models import CoefficientDetail
 from .serializers import  CoefficientDetailSerializer,CofficientCreateSerializer
@@ -30,7 +31,7 @@ class CoefficientDetailViewset(viewsets.ModelViewSet):
     """
     系数
     """
-    #serializer_class = CoefficientDetailSerializer
+    serializer_class = CoefficientDetailSerializer
     queryset = CoefficientDetail.objects.all().order_by("id")
     authentication_classes = (JSONWebTokenAuthentication, authentication.SessionAuthentication )
     pagination_class = CoefficientDetailPagination
@@ -38,15 +39,15 @@ class CoefficientDetailViewset(viewsets.ModelViewSet):
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     search_fields = ('user__name','user__idcardnumber')
     ordering_fields = ('coefficent', 'rank','add_time','update_time')
-    def get_serializer_class(self):
-        if self.action =="create":
-            return CofficientCreateSerializer
-        elif self.action =="list":
-            return CoefficientDetailSerializer
-        elif self.action == "retrieve":
-            return CoefficientDetailSerializer
-        else:
-            return CofficientCreateSerializer
+    # def get_serializer_class(self):
+    #     if self.action =="create":
+    #         return CofficientCreateSerializer
+    #     elif self.action =="list":
+    #         return CoefficientDetailSerializer
+    #     elif self.action == "retrieve":
+    #         return CoefficientDetailSerializer
+    #     else:
+    #         return CofficientCreateSerializer
     def get_permissions(self):
         if self.action == "retrieve":
             return [permissions.IsAuthenticated()]

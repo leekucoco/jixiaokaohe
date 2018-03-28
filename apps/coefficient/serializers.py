@@ -1,24 +1,21 @@
 # -*- coding: utf-8 -*-
-import re
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
-from datetime import datetime,date
+from datetime import date
 from .models import CoefficientDetail
-from depart.models import DepartDetail,IndexUserDepart
+from depart.models import IndexUserDepart
 from depart.serializers import DepartSerializer
-from users.serializers import UserDetailSerializer
-from rest_framework import status
-from rest_framework.response import Response
 from certificates.models import IndexUserCertificate
 from certificates.serializers import IndexUserCertificateSerializer
-from users.models import UserProfile
+from rank13.models import Rank13Coefficent
+from coefficient.task import add
 User = get_user_model()
 
 class CofficientCreateSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
     class Meta:
         model = CoefficientDetail
-        fields = ("user","coefficent")
+        fields = ("user","rank13demands","rank13coefficent")
     # def create(self, validated_data):
     #     user_data = validated_data['user']
     #     #name = certificates_data['name']
@@ -55,7 +52,7 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
     #user = UserDetailSerializer(read_only=True)
     #user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all(),read_only=True)
     #user = serializers.PrimaryKeyRelatedField(read_only=True)
-    ra = serializers.SerializerMethodField()
+
     idcardnumber = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
     depart = serializers.SerializerMethodField()
@@ -63,90 +60,46 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
     rank13 = serializers.SerializerMethodField()
     joinedyears = serializers.SerializerMethodField()
     yearsofwork = serializers.SerializerMethodField()
+    demandyears = serializers.SerializerMethodField()
     scoreofyears = serializers.SerializerMethodField()
     education = serializers.SerializerMethodField()
-    yearsofscore = serializers.SerializerMethodField()
-    demandyears = serializers.SerializerMethodField()
+    demandeducation = serializers.SerializerMethodField()
+    scoreofeducation = serializers.SerializerMethodField()
+    title = serializers.SerializerMethodField()
+    demandtitle = serializers.SerializerMethodField()
+    scoreoftitle = serializers.SerializerMethodField()
+    primccbp = serializers.SerializerMethodField()
+    demandprimccbp = serializers.SerializerMethodField()
+    scoreofprimccbp = serializers.SerializerMethodField()
+    intermediateccbp = serializers.SerializerMethodField()
+    scoreofintermediateccbp = serializers.SerializerMethodField()
+    internel_trainer = serializers.SerializerMethodField()
+    scoreofinternel_trainer = serializers.SerializerMethodField()
+    totalscore = serializers.SerializerMethodField()
     certificates = serializers.SerializerMethodField()
     certificatetotalscore = serializers.SerializerMethodField()
+    level = serializers.SerializerMethodField()
+    #rank13coefficent = Rank13CoefficentSerializer()
+    coefficent = serializers.SerializerMethodField()
     class Meta:
         model = CoefficientDetail
-        fields = ("id","user","coefficent","ra",
+        fields = ("id","user","rank13demands",
                   "name","idcardnumber","depart",
                   "post","rank13","joinedyears",
-                  "yearsofwork","scoreofyears",
-                  "education","yearsofscore","demandyears",
-                  "certificates","certificatetotalscore"
+                  "yearsofwork","demandyears","scoreofyears",
+                  "education","demandeducation","scoreofeducation",
+                  "title","demandtitle","scoreoftitle",
+                  "primccbp","demandprimccbp","scoreofprimccbp",
+                  "intermediateccbp","scoreofintermediateccbp",
+                  "internel_trainer","scoreofinternel_trainer","totalscore",
+                  "certificates","certificatetotalscore","level","rank13coefficent","coefficent","is_special"
                   )
-    def get_certificatetotalscore(self,obj):
-        certificateinfo = IndexUserCertificate.objects.filter(user=obj.user)
-        scoret = 0
-        if certificateinfo:
-            for cer in certificateinfo:
-                scoret = cer.certificate.score + scoret
-        else:
-            scoret = 0
-        if obj.cscore != scoret:
-            obj.cscore = scoret
-            obj.save()
-        else :
-            scoret =obj.cscore
-        return scoret
-    def get_certificates(self,obj):
-        #all_goods = Goods.objects.filter(Q(category_id=obj.id)|Q(category__parent_category_id=obj.id)|Q(category__parent_category__parent_category_id=obj.id))
-        certificateinfo = IndexUserCertificate.objects.filter(user=obj.user)
-        if certificateinfo:
-            certificates_serializer = IndexUserCertificateSerializer(certificateinfo, many=True, context={'request': self.context['request']})
-            return certificates_serializer.data
-        else:
-            return  "no certificates info"
-
-    def get_demandyears(self,obj):
-        departinfo = self.get_depart(obj)
-
-        demandyearsres = 0
-
-        if departinfo :
-            post = obj.user.post
-            rank13 = obj.user.rank13
-            departtype = departinfo["dept_type"]
-            if rank13 ==1 :
-                demandyearsres = 1
-            if rank13==2  :
-                if departtype == 2 and post == "客户经理":
-                    demandyearsres=2
-                elif departtype == 2 and post != "客户经理":
-                    demandyearsres=1
-                elif departtype ==1 and post == "携款员":
-                    demandyearsres=1
-                elif departtype ==1 and post != "驾驶员":
-                    demandyearsres =3
-            else:
-                return 5
-            return departtype
-        else:
-            return 2
-    def get_education(self,obj):
-        return UserProfile.EDUCATION_CHOICES[obj.user.education-1]
-    def get_yearsofscore(self,obj):
-        return self.get_scoreofyears(obj)+self.get_yearsofwork(obj)
-    def get_scoreofyears(self,obj):
-        return 5
-    def get_yearsofwork(self,obj):
-        if obj.user.joinedyears:
-            return date.today().year-obj.user.joinedyears.year
-        elif obj.user.joinedyears is None:
-            return 0
-        else:
-            return 0
-    def getsc(self,obj):
-        return self.get_scoreofyears(obj)+self.get_yearsofwork(obj)
-    def get_joinedyears(self,obj):
-        return obj.user.joinedyears
+    def get_coefficent(self,obj):
+        return obj.rank13coefficent.coefficent
     def get_rank13(self,obj):
-        return obj.user.rank13
+        return obj.rank13demands.rank
     def get_post(self,obj):
-        return obj.user.post
+        return obj.rank13demands.post.name
     def get_depart(self,obj):
         departinfo = IndexUserDepart.objects.filter(user=obj.user)
         if departinfo:
@@ -159,8 +112,125 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
         return obj.user.idcardnumber
     def get_name(self,obj):
         return obj.user.name
-    def get_ra(self,obj):
-        return UserProfile.TITLE_CHOICES[obj.user.title-1]
+
+    def get_certificatetotalscore(self,obj):
+        certificateinfo = IndexUserCertificate.objects.filter(user=obj.user)
+        scoret = 0
+        if certificateinfo:
+            for cer in certificateinfo:
+                scoret = cer.certificate.score + scoret
+        else:
+            scoret = 0
+        # if obj.cscore != scoret:
+        #     obj.cscore = scoret
+        #     obj.save()
+        # else :
+        #     scoret =obj.cscore
+        return scoret
+    def get_certificates(self,obj):
+        #all_goods = Goods.objects.filter(Q(category_id=obj.id)|Q(category__parent_category_id=obj.id)|Q(category__parent_category__parent_category_id=obj.id))
+        certificateinfo = IndexUserCertificate.objects.filter(user=obj.user)
+        if certificateinfo:
+            certificates_serializer = IndexUserCertificateSerializer(certificateinfo, many=True, context={'request': self.context['request']})
+            return certificates_serializer.data
+        else:
+            return  "no certificates info"
+    def get_joinedyears(self,obj):#获取参加工作时间
+        return obj.user.joinedyears
+    def get_yearsofwork(self,obj):#获取工作年限
+        if obj.user.joinedyears:
+            return date.today().year-obj.user.joinedyears.year
+        elif obj.user.joinedyears is None:
+            return 0
+        else:
+            return 0
+    def get_demandyears(self,obj):#获取要求工作年限
+        return obj.rank13demands.demandyears
+    def get_scoreofyears(self,obj):#获取年限得分
+        demands = self.get_demandyears(obj)
+        yearsofwork = self.get_yearsofwork(obj)
+        if yearsofwork == demands:
+            return 0
+        elif yearsofwork > demands:
+            return round((yearsofwork-demands)/2)*1
+        elif yearsofwork < demands:
+            return (yearsofwork-demands)*2
+
+    def get_education(self,obj):#获取学历
+        return obj.user.education
+    def get_demandeducation(self,obj):#学历要求
+        return obj.rank13demands.educationdemands
+    def get_scoreofeducation(self,obj):#学历得分
+        education = self.get_education(obj)
+        demandeducation = self.get_demandeducation(obj)
+        return education-demandeducation
+    def get_title(self,obj):#职称
+        return obj.user.title
+    def get_demandtitle(self,obj):#职称要求
+        return obj.rank13demands.titledemands
+    def get_scoreoftitle(self,obj):#职称得分
+        title =self.get_title(obj)
+        demandtitle = self.get_demandtitle(obj)
+        return title - demandtitle
+    def get_primccbp(self,obj):#初级银行从业
+        return obj.user.primccbp
+    def get_demandprimccbp(self,obj):#初级银行从业要求
+        return obj.rank13demands.primccbpdemands
+    def get_scoreofprimccbp(self,obj):#初级银行从业得分
+        primccbp = self.get_primccbp(obj)
+        demandprimccbp = self.get_demandprimccbp(obj)
+        return primccbp-demandprimccbp
+    def get_intermediateccbp(self,obj):#中级银行从业
+        return obj.user.intermediateccbp
+    def get_scoreofintermediateccbp(self,obj):
+        return self.get_intermediateccbp(obj)*2
+    def get_internel_trainer(self,obj):#内训师
+        return obj.user.internel_trainer
+    def get_scoreofinternel_trainer(self,obj):
+        return self.get_internel_trainer(obj)-1
+    def get_totalscore(self,obj):#总得分
+        totalscore = 0
+        scoreofyears = self.get_scoreofyears(obj)
+        scoreofeducation = self.get_scoreofeducation(obj)
+        scoreoftitle = self.get_scoreoftitle(obj)
+        scoreofprimccbp = self.get_scoreofprimccbp(obj)
+        scoreofintermediateccbp = self.get_scoreofintermediateccbp(obj)
+        scoreofinternel_trainer = self.get_scoreofinternel_trainer(obj)
+        certificatetotalscore = self.get_certificatetotalscore(obj)
+        totalscore = (scoreofyears+scoreofeducation+scoreofprimccbp+scoreoftitle+
+                      scoreofintermediateccbp+scoreofinternel_trainer+
+                      certificatetotalscore)
+
+        return totalscore
+
+    def get_level(self,obj):#级次
+        rank = self.get_rank13(obj)
+        totalscore = self.get_totalscore(obj)
+        level = 1
+        if totalscore <= -10:
+            level =  1
+        elif -10< totalscore <= -5:
+            level = 2
+        elif -5 <totalscore <5:
+            level = 3
+        elif 5<= totalscore< 10:
+            level = 4
+        elif 10 <= totalscore:
+            level = 5
+        else :
+            level = 0
+
+        # if obj.is_special == False:
+        #     co = Rank13Coefficent.objects.get(level=level, rank=rank)
+        #     if obj.rank13coefficent != co:
+        #         obj.rank13coefficent = co
+        #         obj.save()
+        #     else:
+        #         pass
+        # elif obj.is_special == True:
+        #     pass
+
+        return level
     # def get_user(self,obj):
     #     #all_goods = Goods.objects.filter(Q(category_id=obj.id)|Q(category__parent_category_id=obj.id)|Q(category__parent_category__parent_category_id=obj.id))
     #     userinfo = User.objects.filter(id=obj.user.id)
@@ -170,3 +240,10 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
     #         return userinfo_serializer.data
     #     else:
     #         return  "no certificates info"
+    # def create(self, validated_data):
+    #
+    #     validated_data["rank13coefficent"] = Rank13Coefficent.objects.get(id=12)
+    #     co = super(CoefficientDetailSerializer, self).create(validated_data=validated_data)
+    #     # co.rank13coefficent.id = 12
+    #     # co.save()
+    #     return co

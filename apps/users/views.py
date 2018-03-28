@@ -99,14 +99,13 @@ class UserViewset(viewsets.ModelViewSet):
     pagination_class = UserPagination
     # authentication_classes = (TokenAuthentication, )
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    search_fields = ('name', 'idcardnumber')
+    search_fields = ('name', 'idcardnumber', 'username')
     ordering_fields = ('joinedyears', 'education')
     def get_serializer_class(self):
         if self.action == "retrieve":
             return UserDetailSerializer
         elif self.action == "list":
             return UserDetailSerializer
-
         return UserCreateSerializer
 
     #permission_classes = (permissions.IsAuthenticatedOrReadOnly,)

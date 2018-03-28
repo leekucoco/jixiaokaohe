@@ -6,7 +6,7 @@ class DepartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = DepartDetail
-        fields = ("name", "dept_type", "basesalary")
+        fields = ("name", "dept_type", "parent_dept","manager","leader" ,"basesalary")
 
 class IndexUserDepartSerializer(serializers.ModelSerializer):
 

@@ -14,12 +14,12 @@ class DepartDetail(models.Model):
 
     )
     name = models.CharField(default="", max_length=30, verbose_name="机构", help_text="机构")
-    desc = models.TextField(default="", verbose_name="机构描述", help_text="机构描述")
+    desc = models.TextField(default="", null= True, verbose_name="机构描述", help_text="机构描述")
     dept_type = models.IntegerField(choices=DEPT_TYPE, verbose_name="组织", help_text="组织")
     parent_dept = models.ForeignKey("self", null=True, blank=True, verbose_name="上级部门", help_text="上级部门",
                                         related_name="parentdept")
-    manager = models.ForeignKey(User, verbose_name="部门经理", help_text="部门经理", related_name="dept_manager")
-    leader = models.ForeignKey(User, verbose_name="主管领导", help_text="主管领导", related_name="dept_leader")
+    manager = models.ForeignKey(User, null= True, verbose_name="部门经理", help_text="部门经理", related_name="dept_manager")
+    leader = models.ForeignKey(User,  null= True,verbose_name="主管领导", help_text="主管领导", related_name="dept_leader")
     basesalary = models.DecimalField(max_digits=10,decimal_places=0,default=0)
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 

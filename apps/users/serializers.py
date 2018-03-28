@@ -52,16 +52,16 @@ class UserDetailSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault()
     )
     depart_user = serializers.SerializerMethodField()
-    ys = serializers.SerializerMethodField()
+
     certificates = serializers.SerializerMethodField()
-    rank13 = Rank13CoefficentSerializer()
+
     class Meta:
         model = User
         fields = ("id","user", "idcardnumber", "username",  "name","depart_user",
                   "mobile","joinedyears", "education", "title", "internel_trainer",
-                  "ys","certificates",
-                  "cmanagerlevel","cmanagerrank","clerkrank","rank13",
-                  "primccbp","intermediateccbp","post")
+                  "certificates",
+                  "cmanagerlevel","cmanagerrank","clerkrank",
+                  "primccbp","intermediateccbp")
 
     def get_depart_user(self,obj):
         departinfo = IndexUserDepart.objects.filter(user_id=obj.id)
@@ -82,13 +82,6 @@ class UserDetailSerializer(serializers.ModelSerializer):
         else:
             return  "no certificates info"
 
-    def get_ys(self,obj):
-        if obj.joinedyears:
-            return date.today().year-obj.joinedyears.year
-        elif obj.joinedyears is None:
-            return "do not exist"
-        else:
-            return 0
 
 
 class UserCreateSerializer(serializers.ModelSerializer):

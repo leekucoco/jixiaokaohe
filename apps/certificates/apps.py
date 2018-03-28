@@ -5,5 +5,3 @@ class CertificatesConfig(AppConfig):
     name = 'certificates'
     verbose_name = "证书"
 
-    def ready(self):
-        import certificates.signals

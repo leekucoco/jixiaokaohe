@@ -25,7 +25,7 @@ class CerficatesPagination(PageNumberPagination):
 
 class CerficatesViewset(viewsets.ModelViewSet):
     """
-    机构
+    证书
     """
     serializer_class = CerficateSerializer
     queryset = Cerficates.objects.all().order_by("id")
@@ -77,8 +77,15 @@ class IndexUserCertificateViewset(viewsets.ModelViewSet):
             return IndexUserCertificateSerializer
         elif self.action == "create":
             return IndexUserCertificateSerializer2
+        elif self.action == "list":
+            return IndexUserCertificateSerializer
+        elif self.action == "update":
+            return IndexUserCertificateSerializer
+        elif self.action == "partial_update":
+            return IndexUserCertificateSerializer
+        elif self.action == "destroy":
+            return IndexUserCertificateSerializer
 
-        return IndexUserCertificateSerializer
 
     def get_permissions(self):
         if self.action == "retrieve":
