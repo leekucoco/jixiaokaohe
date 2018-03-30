@@ -13,9 +13,20 @@ User = get_user_model()
 
 class CofficientCreateSerializer(serializers.ModelSerializer):
     #user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all())
+    add_time = serializers.DateTimeField(read_only=True)
+    update_time = serializers.DateTimeField(read_only=True)
     class Meta:
         model = CoefficientDetail
-        fields = ("user","rank13demands","rank13coefficent")
+        fields = "__all__"
+
+class CofficientUpdateSerializer(serializers.ModelSerializer):
+    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    add_time = serializers.DateTimeField(read_only=True)
+    update_time = serializers.DateTimeField(read_only=True)
+
+    class Meta:
+        model = CoefficientDetail
+        fields = "__all__"
     # def create(self, validated_data):
     #     user_data = validated_data['user']
     #     #name = certificates_data['name']
@@ -52,7 +63,8 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
     #user = UserDetailSerializer(read_only=True)
     #user = serializers.PrimaryKeyRelatedField(required=True, queryset=User.objects.all(),read_only=True)
     #user = serializers.PrimaryKeyRelatedField(read_only=True)
-
+    add_time = serializers.DateTimeField(read_only=True)
+    update_time = serializers.DateTimeField(read_only=True)
     idcardnumber = serializers.SerializerMethodField()
     name = serializers.SerializerMethodField()
     depart = serializers.SerializerMethodField()
@@ -80,7 +92,7 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
     certificatetotalscore = serializers.SerializerMethodField()
     level = serializers.SerializerMethodField()
     #rank13coefficent = Rank13CoefficentSerializer()
-    coefficent = serializers.SerializerMethodField()
+    r13coefficent = serializers.SerializerMethodField()
     class Meta:
         model = CoefficientDetail
         fields = ("id","user","rank13demands",
@@ -92,9 +104,11 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
                   "primccbp","demandprimccbp","scoreofprimccbp",
                   "intermediateccbp","scoreofintermediateccbp",
                   "internel_trainer","scoreofinternel_trainer","totalscore",
-                  "certificates","certificatetotalscore","level","rank13coefficent","coefficent","is_special"
+                  "certificates","certificatetotalscore","level",
+                  "rank13coefficent","r13coefficent","coefficent","is_special",
+                  "add_time","update_time"
                   )
-    def get_coefficent(self,obj):
+    def get_r13coefficent(self,obj):
         return obj.rank13coefficent.coefficent
     def get_rank13(self,obj):
         return obj.rank13demands.rank
@@ -200,7 +214,6 @@ class CoefficientDetailSerializer(serializers.ModelSerializer):
         totalscore = (scoreofyears+scoreofeducation+scoreofprimccbp+scoreoftitle+
                       scoreofintermediateccbp+scoreofinternel_trainer+
                       certificatetotalscore)
-
         return totalscore
 
     def get_level(self,obj):#级次

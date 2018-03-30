@@ -162,14 +162,14 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.SessionAuthentication',
     ),
-    # 'DEFAULT_THROTTLE_CLASSES': (
-    #     'rest_framework.throttling.AnonRateThrottle',
-    #     'rest_framework.throttling.UserRateThrottle'
-    # ),
-    # 'DEFAULT_THROTTLE_RATES': {
-    #     'anon': '2/minute',
-    #     'user': '3/minute'
-    # }
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'anon': '10/minute',
+        'user': '30/minute'
+    }
 }
 
 import datetime
@@ -192,15 +192,19 @@ private_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/private_2048.txt')
 ali_pub_key_path = os.path.join(BASE_DIR, 'apps/trade/keys/alipay_key_2048.txt')
 
 
-# CACHES = {
-#     "default": {
-#         "BACKEND": "django_redis.cache.RedisCache",
-#         "LOCATION": "redis://127.0.0.1:6379",
-#         "OPTIONS": {
-#             "CLIENT_CLASS": "django_redis.client.DefaultClient",
-#         }
-#     }
-# }
+REST_FRAMEWORK_EXTENSIONS = {
+    'DEFAULT_CACHE_RESPONSE_TIMEOUT': 15
+}
+
+CACHES = {
+    "default": {
+        "BACKEND": "django_redis.cache.RedisCache",
+        "LOCATION": "redis://127.0.0.1:6379/1",
+        "OPTIONS": {
+            "CLIENT_CLASS": "django_redis.client.DefaultClient",
+        }
+    }
+}
 
 
 
@@ -225,7 +229,7 @@ CELERYBEAT_SCHEDULE = {
     #定时任务一：　每24小时周期执行任务(del_redis_data)
     u'更新用户等级系数': {
         "task": "coefficient.task.ensurerankleveltask",
-        "schedule": crontab(minute='*/1'),
+        "schedule": crontab(minute='*/30'),
         "args": (),
     },
     # #定时任务二:　每天的凌晨12:30分，执行任务(back_up1)

@@ -33,7 +33,7 @@ class DepartViewset(viewsets.ModelViewSet):
     pagination_class = DepartPagination
     # authentication_classes = (TokenAuthentication, )
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    search_fields = ('name')
+    search_fields = ('name',)
     ordering_fields = ('name', 'basesalary')
     def get_permissions(self):
         if self.action == "retrieve":
@@ -68,8 +68,8 @@ class IndexUserDeparViewset(viewsets.ModelViewSet):
     pagination_class = IndexUserDepartPagination
     # authentication_classes = (TokenAuthentication, )
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
-    search_fields = ('name','depart')
-    ordering_fields = ('name', 'depart')
+    search_fields = ('user__name', 'depart__name')
+    ordering_fields = ('user__name', 'depart__name', 'add_time')
     def get_permissions(self):
         if self.action == "retrieve":
             return [permissions.IsAuthenticatedOrReadOnly()]

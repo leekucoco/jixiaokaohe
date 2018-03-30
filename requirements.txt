@@ -20,3 +20,8 @@ drf-extensions
 django-redis
 pycryptodome
 raven
+celery 
+django-celery
+flower
+redis
+future

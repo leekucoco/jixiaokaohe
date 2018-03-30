@@ -41,12 +41,12 @@ layui.use('table', function(){
              ,{field:'certificatetotalscore',width:80, edit:true, title:"证书得分"}
              ,{field:'education',width:80, edit:true, title:"学历"
                 ,templet: function (d) {
-                    return d.education[1]
+                    //console.log(d)
+                    educations = ["高中（中专）及以下","大学专科","大学本科","硕士研究生","博士研究生及以上"]
+                    return educations[d.education-1]
                  }
-
-            }
-
-             ,{field:'rank13',width:80, edit:true, title:"等级"}
+             }
+             ,{field:'rank13',width:80, edit:true, title:"行员等级"}
              ,{field:'post',width:80, edit:true, title:"岗位"}
              // "id","user","coefficent","ra",
              //      "name","idcardnumber","depart",

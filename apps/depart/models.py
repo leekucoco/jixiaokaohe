@@ -31,9 +31,9 @@ class DepartDetail(models.Model):
         return self.name
 
 class IndexUserDepart(models.Model):
-    user = models.ForeignKey(User, related_name='user_depart',verbose_name="用户-部门")
+    user = models.OneToOneField(User, unique=True, related_name='user_depart',verbose_name="用户-部门")
     depart =models.ForeignKey(DepartDetail, related_name='depart_user',verbose_name="部门-用户")
-
+    add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
     class Meta:
         verbose_name = '用户-机构'
         verbose_name_plural = verbose_name

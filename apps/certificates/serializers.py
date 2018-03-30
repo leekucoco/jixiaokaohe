@@ -13,7 +13,7 @@ class CerficateSerializer(serializers.ModelSerializer):
     # )
     class Meta:
         model = Cerficates
-        fields = ('name','score',)
+        fields = ("id", 'name','score',)
 
 class IndexUserCertificateSerializer(serializers.ModelSerializer):
     certificate = serializers.StringRelatedField()
@@ -24,19 +24,19 @@ class IndexUserCertificateSerializer(serializers.ModelSerializer):
     )
     name = serializers.SerializerMethodField()
     score = serializers.SerializerMethodField()
-
+    add_time = serializers.DateTimeField(read_only=True)
     class Meta:
         model = IndexUserCertificate
-        fields = ("user", "certificate", "name","score","image","certificatemanager")
+        fields = ("id","user", "certificate", "name","score","image","certificatemanager","add_time")
     def get_name(self,obj):
         return obj.certificate.name
     def get_score(self,obj):
         return obj.certificate.score
 class IndexUserCertificateSerializer2(serializers.ModelSerializer):
-
+    add_time = serializers.DateTimeField(read_only=True)
     class Meta:
         model = IndexUserCertificate
-        fields = ("user", "certificate", "image")
+        fields = ("user", "certificate", "image","add_time")
 
     # def create(self, validated_data):
     #     certificates_data = validated_data.pop('certificate')

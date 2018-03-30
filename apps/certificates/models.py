@@ -31,7 +31,7 @@ class IndexUserCertificate(models.Model):
     class Meta:
         verbose_name = '用户-证书'
         verbose_name_plural = verbose_name
-        #unique_together = ("user", "depart")
+        unique_together = ("user", "certificate")
 
         # return self.certificate.score
     def __str__(self):

@@ -49,6 +49,7 @@ class UserProfile(AbstractUser):
         (2, "初级"),
         (3, "中级"),
         (4, "高级"),
+        (5, "资深"),
     )
 
     idcardnumber = models.CharField(max_length=18, null=True, blank=True, verbose_name="身份证号")
@@ -70,7 +71,7 @@ class UserProfile(AbstractUser):
     cmanagerlevel = models.IntegerField(default=1,choices=CMANAGERLEVEL_CHOICES,verbose_name="客户经理等次",
                                            help_text=u"客户经理等次: 1(无),2(一等),3(二等),4(三等)")
     cmanagerrank = models.IntegerField(default=1,choices=CMANAGERRANK_CHOICES,verbose_name="客户经理级次",
-                                           help_text=u"客户经理级次: 1(无),2(初级),3(中级),4(高级)")
+                                           help_text=u"客户经理级次: 1(无),2(初级),3(中级),4(高级),5(资深)")
 
     clerkrank = models.IntegerField(default=1,choices=CLERKRANK_CHONCES,verbose_name="柜员等级",
                                            help_text=u"柜员等级: 1(无),2(见习),3(初级),4(中级),5(高级),6(资深)")

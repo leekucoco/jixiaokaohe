@@ -11,14 +11,14 @@ from django.contrib.auth import get_user_model
 User = get_user_model()
 from rank13.models import Rank13Coefficent,Rank13Demands
 from certificates.models import IndexUserCertificate
-
+from depart.models import IndexUserDepart
 class CoefficientDetail(models.Model):
     """
     系数明细
     """
     user = models.OneToOneField(User, verbose_name=u"用户")
     rank13demands = models.ForeignKey(Rank13Demands,  verbose_name=u"岗位等级及岗位要求", default=1)
-    rank13coefficent = models.ForeignKey(Rank13Coefficent, verbose_name=u"系数", default=1)
+    rank13coefficent = models.ForeignKey(Rank13Coefficent, verbose_name=u"等级行员关联系数", default=1)
     # yscore = models.IntegerField(default=0,verbose_name="年限得分",help_text="年限得分")
     # escore = models.IntegerField(default=0,verbose_name="学历得分",help_text="学历得分")
     # tscore =models.IntegerField(default=0,verbose_name="职称得分",help_text="职称得分")
@@ -28,7 +28,7 @@ class CoefficientDetail(models.Model):
     # cscore =models.IntegerField(default=0,verbose_name="其他证书得分",help_text="其他证书得分")
     # totalscore =models.IntegerField(default=0,verbose_name="总得分",help_text="总得分")
     # rank =models.IntegerField(default=0,verbose_name="级次",help_text="级次")
-    # coefficent = models.FloatField(default=0,verbose_name="系数",help_text="系数")
+    coefficent = models.FloatField(default=0,verbose_name="系数",help_text="系数")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
     update_time = models.DateTimeField(default=datetime.now, verbose_name="修改时间")
     is_special = models.BooleanField(default=False,verbose_name="是否为特殊指定系数")
@@ -36,7 +36,7 @@ class CoefficientDetail(models.Model):
     class Meta:
         verbose_name = "员工系数"
         verbose_name_plural = verbose_name
-        unique_together = ("user", "rank13coefficent")
+        unique_together = ("user", "coefficent")
 
     def __str__(self):
         return self.user.username
@@ -137,6 +137,7 @@ class CoefficientDetail(models.Model):
     def ensureranklevel(self):
         rank = self.rank13demands.rank
         level = self.get_level()
+
         if self.is_special == False:
             co = Rank13Coefficent.objects.get(level=level, rank=rank)
             if self.rank13coefficent != co:
@@ -145,5 +146,69 @@ class CoefficientDetail(models.Model):
                 return  self.user.username, "成功更新用户等级系数"
             else:
                 return self.user.username, "等级系数匹配无需更改"
+
         elif self.is_special == True:
-            return self.user.username, "特殊系数用户无法更改"
+            return self.user.username, "特殊等级系数用户无法更改"
+        else:
+            pass
+
+    def finalcoefficent(self):
+        cmanagerlevel =  self.user.cmanagerlevel
+        cmanagerrank  =  self.user.cmanagerrank
+        clerkrank     =  self.user.clerkrank
+        depttype = 1
+        try:
+            depttypet = IndexUserDepart.objects.get(user=self.user)
+            depttype =depttypet.depart.dept_type
+        except Exception:
+            pass
+        cm = [[2, 2, 1.6],[2, 3, 1.8], [2, 4, 2.0],
+              [3, 2, 2.2],[3, 3, 2.4], [3, 4, 2.6],
+              [4, 2, 2.8],[4, 3, 3.0], [4, 4, 3.2],
+              [5, 2, 3.8],[5, 3, 3.8], [5, 4, 3.8],
+              [5, 1, 3.8]
+              ]
+
+        cl = [[3,1.5],[4,1.7],[5,1.9],[6,1.9]]
+
+        if self.is_special == False:
+            if depttype == 1:
+                self.coefficent = self.rank13coefficent.coefficent
+            elif depttype ==2 :
+                coe = 0
+                if clerkrank ==1 and cmanagerrank > 1:#客户经理系数判断
+                    for i in cm:
+                        if i[0] == cmanagerrank:
+                            if i[1] == cmanagerlevel:
+                                coe = i[2]
+                                if coe >= self.rank13coefficent.coefficent:
+                                    self.coefficent = coe
+                                else:
+                                    self.coefficent = self.rank13coefficent.coefficent
+                                print("客户经理",coe)
+                                break
+                            else:
+                                continue
+                        else:
+                            continue
+
+                elif cmanagerrank ==1 and clerkrank > 1:
+                    for i in cl:
+                        if i[0] == clerkrank:
+                            coe = i[1]
+                            if coe >= self.rank13coefficent.coefficent:
+                                self.coefficent = coe
+                            else:
+                                self.coefficent = self.rank13coefficent.coefficent
+                            print("柜员",coe)
+                            break
+                        else:
+                            continue
+                else:
+                    self.coefficent = self.rank13coefficent.coefficent
+            else:
+                self.coefficent = self.rank13coefficent.coefficent
+            print("其他默认系数",self.coefficent)
+            self.save()
+        else:
+            pass
