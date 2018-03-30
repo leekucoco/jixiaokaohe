@@ -2,26 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="fa0de7b8-b13c-4381-bfb0-2917672ad5d0" name="Default" comment="">
-      <change beforePath="" afterPath="$PROJECT_DIR$/apps/certificates/migrations/0003_auto_20180329_1542.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/apps/coefficient/migrations/0004_auto_20180329_0958.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/apps/coefficient/migrations/0005_auto_20180329_1546.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/apps/depart/migrations/0004_indexuserdepart_add_time.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/apps/depart/migrations/0005_auto_20180329_1537.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/apps/depart/migrations/0006_auto_20180329_1538.py" />
-      <change beforePath="" afterPath="$PROJECT_DIR$/apps/users/migrations/0002_auto_20180329_0958.py" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change beforePath="$PROJECT_DIR$/MxShop/settings.py" afterPath="$PROJECT_DIR$/MxShop/settings.py" />
-      <change beforePath="$PROJECT_DIR$/apps/certificates/models.py" afterPath="$PROJECT_DIR$/apps/certificates/models.py" />
-      <change beforePath="$PROJECT_DIR$/apps/certificates/serializers.py" afterPath="$PROJECT_DIR$/apps/certificates/serializers.py" />
-      <change beforePath="$PROJECT_DIR$/apps/coefficient/models.py" afterPath="$PROJECT_DIR$/apps/coefficient/models.py" />
-      <change beforePath="$PROJECT_DIR$/apps/coefficient/serializers.py" afterPath="$PROJECT_DIR$/apps/coefficient/serializers.py" />
-      <change beforePath="$PROJECT_DIR$/apps/coefficient/views.py" afterPath="$PROJECT_DIR$/apps/coefficient/views.py" />
-      <change beforePath="$PROJECT_DIR$/apps/depart/models.py" afterPath="$PROJECT_DIR$/apps/depart/models.py" />
-      <change beforePath="$PROJECT_DIR$/apps/depart/serializers.py" afterPath="$PROJECT_DIR$/apps/depart/serializers.py" />
-      <change beforePath="$PROJECT_DIR$/apps/depart/views.py" afterPath="$PROJECT_DIR$/apps/depart/views.py" />
-      <change beforePath="$PROJECT_DIR$/apps/users/models.py" afterPath="$PROJECT_DIR$/apps/users/models.py" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" afterPath="$PROJECT_DIR$/requirements.txt" />
-      <change beforePath="$PROJECT_DIR$/static/layui/tablerender.js" afterPath="$PROJECT_DIR$/static/layui/tablerender.js" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -44,7 +25,7 @@
         <entry file="file://$PROJECT_DIR$/MxShop/settings.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="634">
-              <caret line="246" column="1" lean-forward="true" selection-start-line="246" selection-start-column="1" selection-end-line="246" selection-end-column="1" />
+              <caret line="246" column="1" lean-forward="false" selection-start-line="246" selection-start-column="1" selection-end-line="246" selection-end-column="1" />
               <folding />
             </state>
           </provider>
@@ -166,8 +147,8 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="231" />
-    <option name="y" value="29" />
+    <option name="x" value="117" />
+    <option name="y" value="58" />
     <option name="width" value="1152" />
     <option name="height" value="973" />
   </component>
@@ -574,11 +555,19 @@
       <option name="project" value="LOCAL" />
       <updated>1522227262870</updated>
     </task>
-    <option name="localTasksCounter" value="8" />
+    <task id="LOCAL-00008" summary="0330">
+      <created>1522392576705</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1522392576705</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="231" y="29" width="1152" height="973" extended-state="0" />
+    <frame x="117" y="58" width="1152" height="973" extended-state="0" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.30299667" sideWeight="0.38127854" order="7" side_tool="true" content_ui="tabs" />
@@ -586,7 +575,7 @@
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.42390078" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37558138" sideWeight="0.62956524" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32969433" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17605634" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17605634" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Docker" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="13" side_tool="false" content_ui="tabs" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="SciView" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -684,7 +673,8 @@
     <MESSAGE value="0319first commit" />
     <MESSAGE value="0322" />
     <MESSAGE value="0328" />
-    <option name="LAST_COMMIT_MESSAGE" value="0328" />
+    <MESSAGE value="0330" />
+    <option name="LAST_COMMIT_MESSAGE" value="0330" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -893,6 +883,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="69" column="89" lean-forward="true" selection-start-line="69" selection-start-column="89" selection-end-line="69" selection-end-column="89" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1073,7 +1064,7 @@
         <state relative-caret-position="1512">
           <caret line="56" column="51" lean-forward="true" selection-start-line="56" selection-start-column="51" selection-end-line="56" selection-end-column="51" />
           <folding>
-            <element signature="e#24#62#0" expanded="true" />
+            <element signature="e#24#62#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1083,7 +1074,7 @@
         <state relative-caret-position="621">
           <caret line="59" column="37" lean-forward="true" selection-start-line="59" selection-start-column="37" selection-end-line="59" selection-end-column="37" />
           <folding>
-            <element signature="e#0#35#0" expanded="true" />
+            <element signature="e#0#35#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1091,7 +1082,7 @@
     <entry file="file://$PROJECT_DIR$/MxShop/settings.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="634">
-          <caret line="246" column="1" lean-forward="true" selection-start-line="246" selection-start-column="1" selection-end-line="246" selection-end-column="1" />
+          <caret line="246" column="1" lean-forward="false" selection-start-line="246" selection-start-column="1" selection-end-line="246" selection-end-column="1" />
           <folding />
         </state>
       </provider>
