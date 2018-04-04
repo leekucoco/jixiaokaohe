@@ -20,7 +20,7 @@ class DepartDetail(models.Model):
                                         related_name="parentdept")
     manager = models.ForeignKey(User, null= True, verbose_name="部门经理", help_text="部门经理", related_name="dept_manager")
     leader = models.ForeignKey(User,  null= True,verbose_name="主管领导", help_text="主管领导", related_name="dept_leader")
-    basesalary = models.DecimalField(max_digits=10,decimal_places=0,default=0)
+    basesalary = models.DecimalField(max_digits=10,decimal_places=2,default=0)
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
 
     class Meta:

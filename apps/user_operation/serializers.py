@@ -46,19 +46,20 @@ class UploadFilesSerializer(serializers.ModelSerializer):
         default=serializers.CurrentUserDefault()
     )
     add_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M')
+    update_time = serializers.DateTimeField(read_only=True, format='%Y-%m-%d %H:%M')
     filename = serializers.CharField(read_only=True,)
     def create(self, validated_data):
         user = self.context["request"].user
         filename = validated_data["file"].name
         validated_data["filename"] = filename
-        existed = UserUploadBaseFiles.objects.get(user=user,filename=filename)
+        existed = UserUploadBaseFiles.objects.filter(user=user,filename=filename)
         if existed:
             # existed.save()
             # existed.message = validated_data["message"]
             # existed.save()
-            existed.update_time = datetime.now()
-            existed.save()
-            return existed
+            existed[0].update_time = datetime.now()
+            existed[0].save()
+            return existed[0]
         else:
             existed = UserUploadBaseFiles.objects.create(**validated_data)
 

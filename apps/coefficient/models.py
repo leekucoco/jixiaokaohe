@@ -28,7 +28,8 @@ class CoefficientDetail(models.Model):
     # cscore =models.IntegerField(default=0,verbose_name="其他证书得分",help_text="其他证书得分")
     # totalscore =models.IntegerField(default=0,verbose_name="总得分",help_text="总得分")
     # rank =models.IntegerField(default=0,verbose_name="级次",help_text="级次")
-    coefficent = models.FloatField(default=0,verbose_name="系数",help_text="系数")
+    coefficent = models.DecimalField(max_digits=4,decimal_places=2,default=0,
+                                     verbose_name="系数",help_text="系数")
     add_time = models.DateTimeField(default=datetime.now, verbose_name="添加时间")
     update_time = models.DateTimeField(default=datetime.now, verbose_name="修改时间")
     is_special = models.BooleanField(default=False,verbose_name="是否为特殊指定系数")

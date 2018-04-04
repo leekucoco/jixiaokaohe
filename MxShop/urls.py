@@ -32,9 +32,10 @@ from depart.views import DepartViewset,IndexUserDeparViewset
 from coefficient.views import CoefficientDetailViewset
 from certificates.views import CerficatesViewset,IndexUserCertificateViewset
 from rank13.views import Rank13CoefficentViewset,AgentViewset,PostViewset,Rank13DemandsViewset
+from salary.views import SalaryRecordViewset,FSalaryViewset
 router = DefaultRouter()
-
-
+router.register(r'fsalary', FSalaryViewset, base_name="fsalary")
+router.register(r'salaryrecord', SalaryRecordViewset, base_name="salaryrecord")
 router.register(r'rank13coefficent', Rank13CoefficentViewset, base_name="rank13coefficent")
 router.register(r'rank13demands', Rank13DemandsViewset, base_name="rank13demands")
 router.register(r'agent', AgentViewset, base_name="agent")
