@@ -49,7 +49,7 @@ class CoefficientDetailViewset(CacheResponseMixin,viewsets.ModelViewSet):
     # authentication_classes = (TokenAuthentication,)
     filter_backends = (DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter)
     filter_class = CoefficientFilter
-    search_fields = ('user__name','user__idcardnumber')
+    search_fields = ('user__name','user__idcardnumber','rank13demands__post__name',)
     ordering_fields = ('coefficent', 'rank','add_time','update_time')
 
 
